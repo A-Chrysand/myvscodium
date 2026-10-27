@@ -22,8 +22,8 @@ on:
       - "**/*.md"
 
 env:
-  APP_NAME: VSCodium
-  BINARY_NAME: ${{ (github.ref == 'refs/heads/insider' || (github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'insider')) && 'codium-insiders' || 'codium' }}
+  APP_NAME: MyVSCodium
+  BINARY_NAME: myvscodium
   GH_REPO_PATH: ${{ github.repository }}
   GITHUB_BRANCH: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.event.head }}
   ORG_NAME: ${{ github.repository_owner }}
@@ -100,15 +100,14 @@ jobs:
       matrix:
         vscode_arch:
           - x64
-          - arm64
     defaults:
       run:
         shell: bash
     env:
       BUILD_SOURCEVERSION: ${{ needs.compile.outputs.BUILD_SOURCEVERSION }}
-      MS_COMMIT: ${{ needs.check.outputs.MS_COMMIT }}
-      MS_TAG: ${{ needs.check.outputs.MS_TAG }}
-      RELEASE_VERSION: ${{ needs.check.outputs.RELEASE_VERSION }}
+      MS_COMMIT: ${{ needs.compile.outputs.MS_COMMIT }}
+      MS_TAG: ${{ needs.compile.outputs.MS_TAG }}
+      RELEASE_VERSION: ${{ needs.compile.outputs.RELEASE_VERSION }}
       SHOULD_BUILD_REH: no
       SHOULD_BUILD_REH_WEB: no
       VSCODE_ARCH: ${{ matrix.vscode_arch }}
